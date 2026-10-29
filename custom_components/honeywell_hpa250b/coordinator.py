@@ -1,4 +1,5 @@
 """Bluetooth coordinator for the Honeywell HPA250B."""
+
 import asyncio
 import logging
 from datetime import timedelta
@@ -7,11 +8,11 @@ from bleak import BleakError
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
 from homeassistant.components import bluetooth
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers.event import async_track_time_interval
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN, WRITE_UUID, STATUS_UUID
+from .const import DOMAIN, STATUS_UUID, WRITE_UUID
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ def parse_status(raw: bytes) -> dict:
     status_code = raw[1]
     data["is_on"] = status_code != 0x00
     from .const import STATUS_TO_MODE
+
     data["preset_mode"] = STATUS_TO_MODE.get(status_code)
 
     if len(raw) > 2:
@@ -83,7 +85,7 @@ class HPA250BCoordinator(DataUpdateCoordinator):
         if client and client.is_connected:
             try:
                 await client.stop_notify(STATUS_UUID)
-            except (BleakError, OSError):
+            except BleakError, OSError:
                 pass
             await client.disconnect()
 
@@ -99,7 +101,10 @@ class HPA250BCoordinator(DataUpdateCoordinator):
                 self.hass, self.address, connectable=True
             )
             if ble_device is None:
-                _LOGGER.debug("No Bluetooth advertisement currently available for %s", self.address)
+                _LOGGER.debug(
+                    "No Bluetooth advertisement currently available for %s",
+                    self.address,
+                )
                 return
             try:
                 client = await establish_connection(
@@ -110,7 +115,9 @@ class HPA250BCoordinator(DataUpdateCoordinator):
                 )
                 self.client = client
                 mac_bytes = bytes.fromhex(self.address.replace(":", ""))
-                await client.write_gatt_char(WRITE_UUID, b"MAC+" + mac_bytes, response=False)
+                await client.write_gatt_char(
+                    WRITE_UUID, b"MAC+" + mac_bytes, response=False
+                )
                 await asyncio.sleep(0.2)
                 try:
                     raw = await client.read_gatt_char(STATUS_UUID)
@@ -119,9 +126,11 @@ class HPA250BCoordinator(DataUpdateCoordinator):
                     _LOGGER.debug("Initial HPA250B status read failed: %s", err)
                 await client.start_notify(STATUS_UUID, self._handle_notification)
                 _LOGGER.info("Connected to Honeywell HPA250B at %s", self.address)
-            except (BleakError, OSError, asyncio.TimeoutError) as err:
+            except (TimeoutError, BleakError, OSError) as err:
                 self.client = None
-                _LOGGER.warning("Could not connect to HPA250B %s: %s", self.address, err)
+                _LOGGER.warning(
+                    "Could not connect to HPA250B %s: %s", self.address, err
+                )
 
     def _handle_disconnect(self, _client):
         _LOGGER.warning("Honeywell HPA250B disconnected")
@@ -147,5 +156,5 @@ class HPA250BCoordinator(DataUpdateCoordinator):
         if wait_for_status:
             try:
                 await asyncio.wait_for(self._status_event.wait(), timeout=2.5)
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 _LOGGER.debug("No status notification received after command")

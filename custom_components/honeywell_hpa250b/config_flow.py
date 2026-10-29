@@ -26,9 +26,11 @@ class HoneywellHPA250BConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     data={CONF_ADDRESS: address},
                 )
 
-        schema = vol.Schema({
-            vol.Required(CONF_ADDRESS): str,
-        })
+        schema = vol.Schema(
+            {
+                vol.Required(CONF_ADDRESS): str,
+            }
+        )
         return self.async_show_form(
             step_id="user",
             data_schema=schema,

@@ -2,7 +2,7 @@
   "domain": "honeywell_hpa250b",
   "name": "Honeywell HPA250B",
   "version": "0.1.0",
-  "documentation": "https://www.home-assistant.io/integrations/",
+  "documentation": "https://github.com/Zenith08/Honeywell-HPA250B",
   "config_flow": true,
   "dependencies": [
     "bluetooth"

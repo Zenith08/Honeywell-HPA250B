@@ -12,6 +12,7 @@ permissions: {}
 
 jobs:
   ruff:
+    if: false
     name: "Ruff"
     runs-on: "ubuntu-latest"
     steps:

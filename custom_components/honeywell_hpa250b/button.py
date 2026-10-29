@@ -1,20 +1,36 @@
 """Auxiliary command buttons for the Honeywell HPA250B."""
+
+from typing import TYPE_CHECKING, Any
+
 from homeassistant.components.button import ButtonEntity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, COMMANDS
-from .coordinator import HPA250BCoordinator
+from .const import COMMANDS, DOMAIN
+
+if TYPE_CHECKING:
+    from .coordinator import HPA250BCoordinator
 
 
-async def async_setup_entry(hass, entry, async_add_entities):
+async def async_setup_entry(hass: Any, entry: Any, async_add_entities: Any) -> None:
+    """TODO Async Setup Entry."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities([
-        HPA250BCommandButton(coordinator, entry, "light_cycle", "Cycle indicator light", "lightbulb"),
-        HPA250BCommandButton(coordinator, entry, "timer_up", "Increase timer", "plus"),
-        HPA250BCommandButton(coordinator, entry, "timer_down", "Decrease timer", "minus"),
-        HPA250BCommandButton(coordinator, entry, "voc_toggle", "Toggle VOC mode", "air-filter"),
-    ])
+    async_add_entities(
+        [
+            HPA250BCommandButton(
+                coordinator, entry, "light_cycle", "Cycle indicator light", "lightbulb"
+            ),
+            HPA250BCommandButton(
+                coordinator, entry, "timer_up", "Increase timer", "plus"
+            ),
+            HPA250BCommandButton(
+                coordinator, entry, "timer_down", "Decrease timer", "minus"
+            ),
+            HPA250BCommandButton(
+                coordinator, entry, "voc_toggle", "Toggle VOC mode", "air-filter"
+            ),
+        ]
+    )
 
 
 class HPA250BCommandButton(CoordinatorEntity, ButtonEntity):
@@ -22,7 +38,15 @@ class HPA250BCommandButton(CoordinatorEntity, ButtonEntity):
 
     _attr_has_entity_name = True
 
-    def __init__(self, coordinator: HPA250BCoordinator, entry, command_key, name, icon):
+    def __init__(
+        self,
+        coordinator: HPA250BCoordinator,
+        entry: Any,
+        command_key: Any,
+        name: Any,
+        icon: Any,
+    ) -> None:
+        """Construct a new instance."""
         super().__init__(coordinator)
         self.command_key = command_key
         self._attr_name = name
@@ -35,5 +59,6 @@ class HPA250BCommandButton(CoordinatorEntity, ButtonEntity):
             model="HPA250B",
         )
 
-    async def async_press(self):
+    async def async_press(self) -> None:
+        """TODO Async Press."""
         await self.coordinator.async_send_command(COMMANDS[self.command_key])
