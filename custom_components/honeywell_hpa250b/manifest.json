@@ -1,20 +1,20 @@
 {
   "domain": "honeywell_hpa250b",
   "name": "Honeywell HPA250B",
-  "version": "0.1.0",
-  "documentation": "https://github.com/Zenith08/Honeywell-HPA250B",
-  "config_flow": true,
-  "dependencies": [
-    "bluetooth"
-  ],
-  "requirements": [
-    "bleak-retry-connector>=3.5.0"
-  ],
   "categories": [
     "climate.air_purifiers_humidifiers",
     "climate.fans_ventilation"
   ],
   "codeowners": [],
+  "config_flow": true,
+  "dependencies": [
+    "bluetooth"
+  ],
+  "documentation": "https://github.com/Zenith08/Honeywell-HPA250B",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/Zenith08/Honeywell-HPA250B/issues"
+  "issue_tracker": "https://github.com/Zenith08/Honeywell-HPA250B/issues",
+  "requirements": [
+    "bleak-retry-connector>=3.5.0"
+  ],
+  "version": "0.1.0"
 }
