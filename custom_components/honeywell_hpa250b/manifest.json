@@ -1,0 +1,21 @@
+{
+  "domain": "honeywell_hpa250b",
+  "name": "Honeywell HPA250B",
+  "version": "0.1.0",
+  "documentation": "https://www.home-assistant.io/integrations/",
+  "config_flow": true,
+  "dependencies": [
+    "bluetooth"
+  ],
+  "requirements": [
+    "bleak-retry-connector>=3.5.0"
+  ],
+  "categories": [
+    "climate",
+    "climate.air_purifiers_humidifiers",
+    "climate.fans_ventilation"
+  ],
+  "codeowners": [],
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/Zenith08/Honeywell-HPA250B/issues"
+}

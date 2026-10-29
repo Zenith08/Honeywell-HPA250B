@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add Honeywell HPA250B",
+        "description": "Enter the purifier's Bluetooth address.",
+        "data": {
+          "address": "Bluetooth address"
+        }
+      }
+    },
+    "error": {
+      "invalid_address": "Enter a Bluetooth MAC address such as F8:36:9B:80:8A:26."
+    },
+    "abort": {
+      "already_configured": "This purifier is already configured."
+    }
+  }
+}
