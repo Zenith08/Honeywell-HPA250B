@@ -11,7 +11,6 @@
     "bleak-retry-connector>=3.5.0"
   ],
   "categories": [
-    "climate",
     "climate.air_purifiers_humidifiers",
     "climate.fans_ventilation"
   ],
